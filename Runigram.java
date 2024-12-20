@@ -35,12 +35,18 @@ public class Runigram {
 		in.readInt();
 		// Creates the image array
 		Color[][] image = new Color[numRows][numCols];
-		// Reads the RGB values from the file into the image array. 
-		// For each pixel (i,j), reads 3 values from the file,
-		// creates from the 3 colors a new Color object, and 
-		// makes pixel (i,j) refer to that object.
-		//// Replace the following statement with your code.
-		return null;
+		for (int i = 0; i < numRows; i++)
+		{
+			for (int j = 0; j <numCols; j++ )
+			{ 
+				int r = in.readInt();
+				int g = in.readInt();
+				int b = in.readInt();
+				image [i][j] = new Color (r,g,b);
+			}
+		}
+		
+		return image;
 	}
 
     // Prints the RGB values of a given color.
@@ -58,7 +64,15 @@ public class Runigram {
 	// For example, to check that some image processing function works correctly,
 	// we can apply the function and then use this function to print the resulting image.
 	private static void print(Color[][] image) {
-		//// Replace this comment with your code
+		for (int i = 0; i< image.length; i++)
+		{
+			for (int j = 0; j < image [i].length; j++)
+			{
+				Color now = image [i][j];
+				print(now);
+			}
+			System.err.println("");
+		}
 		//// Notice that all you have to so is print every element (i,j) of the array using the print(Color) function.
 	}
 	
@@ -66,32 +80,63 @@ public class Runigram {
 	 * Returns an image which is the horizontally flipped version of the given image. 
 	 */
 	public static Color[][] flippedHorizontally(Color[][] image) {
-		//// Replace the following statement with your code
-		return null;
+		Color [][]  flippedHorizontally = new Color [image.length][image[0].length];
+		for (int i = 0; i < image.length; i++)
+		{
+			for (int j = 0; j < image[i].length; j++)
+			{
+				flippedHorizontally [i] [image[i].length - j - 1] = image [i][j];
+			}
+
+		}
+
+		return flippedHorizontally;
 	}
 	
 	/**
 	 * Returns an image which is the vertically flipped version of the given image. 
 	 */
 	public static Color[][] flippedVertically(Color[][] image){
-		//// Replace the following statement with your code
-		return null;
+		Color[][]flippedVertically = new Color[image.length][image[0].length];
+		for (int i = 0; i < image.length; i++)
+		{
+			for (int j =0 ; j <image[i].length; j++)
+			{
+				flippedVertically[image.length - i -1][j] = image [i][j];
+			} 
+
+		}
+		return flippedVertically;
 	}
 	
 	// Computes the luminance of the RGB values of the given pixel, using the formula 
 	// lum = 0.299 * r + 0.587 * g + 0.114 * b, and returns a Color object consisting
 	// the three values r = lum, g = lum, b = lum.
 	private static Color luminance(Color pixel) {
-		//// Replace the following statement with your code
-		return null;
+		int r =(int) (pixel.getRed()*0.299);
+		int g = (int) (pixel.getGreen()*0.587);
+		int b =(int)(pixel.getBlue()*0.114);
+		int lum = r+g+b;
+
+		return new Color (lum,lum,lum);
 	}
 	
 	/**
 	 * Returns an image which is the grayscaled version of the given image.
 	 */
 	public static Color[][] grayScaled(Color[][] image) {
-		//// Replace the following statement with your code
-		return null;
+		Color [][] grayver = new Color [image.length][image[0].length];
+
+		for (int i = 0; i < image.length; i++)
+		{
+			for (int j=0; j < image[0].length; j++)
+			{
+				Color pixel = image [i][j];
+				grayver [i][j] = luminance(pixel);
+			}
+
+		}
+		return grayver;
 	}	
 	
 	/**
@@ -99,9 +144,28 @@ public class Runigram {
 	 * The image is scaled (resized) to have the given width and height.
 	 */
 	public static Color[][] scaled(Color[][] image, int width, int height) {
-		//// Replace the following statement with your code
-		return null;
+		// יצירת מערך לתמונה הממוזערת בגודל החדש
+		Color[][] scaled = new Color[height][width];
+		
+		// לולאה על התמונה הממוזערת בגובה ובאורך
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				// חישוב המיקום המתאים בתמונה המקורית
+				int originalI = i * image.length / height; // חישוב אינדקס שורה בתמונה המקורית
+				int originalJ = j * image[0].length / width; // חישוב אינדקס עמודה בתמונה המקורית
+				
+				// העברת הפיקסל המתאים לתמונה החדשה
+				scaled[i][j] = image[originalI][originalJ];
+			}
+		}
+	
+		return scaled;
 	}
+	
+	
+	
+		
+	
 	
 	/**
 	 * Computes and returns a blended color which is a linear combination of the two given
