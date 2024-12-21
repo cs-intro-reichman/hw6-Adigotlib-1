@@ -160,13 +160,7 @@ public class Runigram {
 		}
 	
 		return scaled;
-	}
-	
-	
-	
-		
-	
-	
+	}	
 	/**
 	 * Computes and returns a blended color which is a linear combination of the two given
 	 * colors. Each r, g, b, value v in the returned color is calculated using the formula 
@@ -174,8 +168,10 @@ public class Runigram {
 	 * values in the two input color.
 	 */
 	public static Color blend(Color c1, Color c2, double alpha) {
-		//// Replace the following statement with your code
-		return null;
+		int r= (int)((c1.getRed()* alpha) + ((1-alpha)*c2.getRed()));
+		int g = (int)((c1.getGreen()* alpha) + ((1-alpha)*c2.getGreen()));
+		int b =(int)((c1.getBlue()* alpha) + ((1-alpha)*c2.getBlue()));
+		return new  Color (r,g,b);
 	}
 	
 	/**
@@ -185,8 +181,16 @@ public class Runigram {
 	 * The two images must have the same dimensions.
 	 */
 	public static Color[][] blend(Color[][] image1, Color[][] image2, double alpha) {
-		//// Replace the following statement with your code
-		return null;
+		Color[][] blend = new Color[image1.length][image1[0].length];
+		for (int i = 0; i < image1.length; i++)
+		{
+			for (int j = 0; j < image1[i].length; j++)
+			{
+				blend [i][j] = blend(image1[i][j], image2[i][j], alpha);
+			}
+		}
+
+		return blend;
 	}
 
 	/**
@@ -195,10 +199,24 @@ public class Runigram {
 	 * Before starting the process, scales the target image to the dimensions
 	 * of the source image.
 	 */
+
 	public static void morph(Color[][] source, Color[][] target, int n) {
-		//// Replace this comment with your code
-	}
+		if (source.length != target.length || source[0].length != target[0].length) {
+			System.out.println("Resizing target image to match source image dimensions.");
+			target = scaled(target, source[0].length, source.length);  
+		}
 	
+		for (int i = 0; i <= n; i++) {
+			double alpha = (double)(n - i) / n; 
+	
+			Color[][] morphedImage = blend(source, target, alpha);
+	
+			setCanvas(morphedImage);
+			display(morphedImage);
+	
+			StdDraw.pause(500);
+		}
+	}
 	/** Creates a canvas for the given image. */
 	public static void setCanvas(Color[][] image) {
 		StdDraw.setTitle("Runigram 2023");
